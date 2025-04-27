@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:3333
+
+@authToken = {{authenticate.response.body.access_token}}
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "jhonDoe@example.com",
+  "password": "123456",
+  "phone": "11955527069"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "jhonDoe@example.com",
+  "password": "123456"
+}
+
+###
+
+# @name fetch_products_by_category
+GET {{baseUrl}}/t-shirt/products/1
+Content-Type: application/json
+
+###
+
+#MUST HAVE AN ACCOUNT AS ADMIN ROLE
+# @name register_product
+POST {{baseUrl}}/product/register
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Product Example",
+  "price": 199.99,
+  "available": true,
+  "category": "t-shirt"
+}
