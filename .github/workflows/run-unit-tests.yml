@@ -35,9 +35,9 @@ jobs:
       - run: npm ci
 
       - name: Run tests
-        run: npm run test
         run: |
           mkdir -p src/infra/auth
           echo "export const jwtConstants = { secret: 'test-secret-constant' };" > src/infra/auth/constants.ts
+          npm run test
         env:
           DATABASE_URL: postgres://user:password@localhost:5433/public
