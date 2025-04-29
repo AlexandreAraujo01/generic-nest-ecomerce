@@ -1,38 +1,33 @@
-name: Run Unit Tests
-
-on:
-  push:
-    branches:
-      - main
-
 jobs:
-  run-unit-tests:
-    name: Run Unit Tests
+  test:
     runs-on: ubuntu-latest
+
     services:
       postgres:
-        image: bitnami/postgresql
-        ports: 
-          - 5433:5432
+        image: postgres:13
         env:
-          POSTGRESQL_USERNAME: postgres
-          POSTGRESQL_PASSWORD: docker
-          POSTGRESQL_DATABASE: generic-e-comerce-pg
+          POSTGRES_DB: public
+          POSTGRES_USER: postegres
+          POSTGRES_PASSWORD: docker
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-node@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: 22
-          cache: 'npm'
+          node-version: 18
 
       - run: npm ci
 
-      - name: Create fake jwtConstants
-        run: |
-          mkdir -p src/infra/auth
-          echo "export const jwtConstants = { secret: 'test-secret-constant' };" > src/infra/auth/constants.ts
-          
-          echo  echo 'DATABASE_URL=postgresql://postgres:docker@localhost:5432/generic-e-comerce-pg?schema=public' > .env
-          
-      - run: npm run test
+      - name: Run tests
+        run: npm run test
+        env:
+          DATABASE_URL: postgres://user:password@localhost:5433/public
