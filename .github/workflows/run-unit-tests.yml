@@ -9,6 +9,15 @@ jobs:
   run-unit-tests:
     name: Run Unit Tests
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: bitnami/postgresql
+        ports: 
+          - 5433:5432
+        env:
+          POSTGRESQL_USERNAME: postgres
+          POSTGRESQL_PASSWORD: docker
+          POSTGRESQL_DATABASE: generic-e-comerce-pg
     steps:
       - uses: actions/checkout@v3
 
