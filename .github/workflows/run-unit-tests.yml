@@ -32,6 +32,7 @@ jobs:
         run: |
           mkdir -p src/infra/auth
           echo "export const jwtConstants = { secret: 'test-secret-constant' };" > src/infra/auth/constants.ts
+          
           echo  echo 'DATABASE_URL=postgresql://postgres:docker@localhost:5432/generic-e-comerce-pg?schema=public' > .env
           
       - run: npm run test
