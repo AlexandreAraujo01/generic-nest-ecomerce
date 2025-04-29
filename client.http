@@ -39,7 +39,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "Product Example",
+  "name": "Product Example3",
   "price": 199.99,
   "available": true,
   "category": "t-shirt"

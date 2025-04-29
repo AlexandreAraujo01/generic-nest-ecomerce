@@ -41,14 +41,18 @@ export class UpdateUserUseCase {
     );
     const userWithSameEmail = await this.userRepository.findByEmail(email);
     if (!user || !loggedUser) {
+      console.log(11111111);
+      console.log(user, loggedUser, 'loggedUser');
       return left(new NotAllowedError());
     }
     const isUserAdmin = loggedUser.role === 'ADMIN' ? true : false;
     const isTheSameUser = userLoggedId === user.id.toString() ? true : false;
     if (!isUserAdmin && !isTheSameUser) {
+      console.log(22222222);
       return left(new NotAllowedError());
     }
     if (userWithSameEmail && userWithSameEmail.id.toString() !== userId) {
+      console.log(33333333);
       return left(new NotAllowedError());
     }
 

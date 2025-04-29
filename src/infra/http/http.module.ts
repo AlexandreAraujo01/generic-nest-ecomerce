@@ -12,6 +12,8 @@ import { ListProductsByNameUseCase } from '@/domain/use-cases/list-products-by-n
 import { FetchProductsByNameController } from './controllers/fetch-many-products-by-name.controller';
 import { UpdateUserController } from './controllers/update-user.controller';
 import { UpdateUserUseCase } from '@/domain/use-cases/update-user-use-case';
+import { UpdateProductController } from './controllers/update-product.controller';
+import { UpdateProductUseCase } from '@/domain/use-cases/update-product-use-case';
 @Module({
   imports: [DatabaseModule],
   controllers: [
@@ -20,6 +22,7 @@ import { UpdateUserUseCase } from '@/domain/use-cases/update-user-use-case';
     RegisterProductController,
     FetchProductsByNameController,
     UpdateUserController,
+    UpdateProductController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -31,6 +34,7 @@ import { UpdateUserUseCase } from '@/domain/use-cases/update-user-use-case';
       provide: HashEncoderDecoder,
       useClass: BcrypyEncoderDecoder,
     },
+    UpdateProductUseCase,
   ],
 
   exports: [
@@ -40,6 +44,7 @@ import { UpdateUserUseCase } from '@/domain/use-cases/update-user-use-case';
     RegisterProductUseCase,
     ListProductsByNameUseCase,
     UpdateUserUseCase,
+    UpdateProductUseCase,
   ],
 })
 export class HttpModule {}

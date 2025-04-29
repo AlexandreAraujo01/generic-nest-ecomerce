@@ -1,3 +1,4 @@
+import { AddressesWatchedList } from '@/domain/entities/address-watched-list';
 import { Prisma, Role } from 'prisma/generated/prisma';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { User } from 'src/domain/entities/user';
@@ -23,7 +24,7 @@ export class PrismaUserMapper {
         name: user.name,
         password: user.password,
         phone: user.phone,
-        addresses: [],
+        addresses: new AddressesWatchedList([]),
         role: user.role ?? 'USER',
       },
       new UniqueEntityID(user.id),

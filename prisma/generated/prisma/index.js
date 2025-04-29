@@ -145,7 +145,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\alexa\\OneDrive\\Desktop\\projetos\\typescript\\generic-e-comerce-gpt-burro\\prisma\\generated\\prisma",
+      "value": "C:\\Users\\alexa\\OneDrive\\Desktop\\projetos\\typescript\\generic-e-comerce-v2\\prisma\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -159,7 +159,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\alexa\\OneDrive\\Desktop\\projetos\\typescript\\generic-e-comerce-gpt-burro\\prisma\\schema.prisma",
+    "sourceFilePath": "C:\\Users\\alexa\\OneDrive\\Desktop\\projetos\\typescript\\generic-e-comerce-v2\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

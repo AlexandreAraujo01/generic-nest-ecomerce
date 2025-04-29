@@ -11,6 +11,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { UserAlreadyExists } from 'src/domain/use-cases/errors/user-already-exists-error';
 import { RegisterUserUseCase } from 'src/domain/use-cases/register-user-use-case';
 import { Public } from '@/infra/auth/public-route.decorator';
+import { Role } from '@prisma/prisma';
 
 const registerBodySchema = z.object({
   name: z.string(),
@@ -19,6 +20,7 @@ const registerBodySchema = z.object({
   phone: z.string().regex(/^\(?\d{2}\)?[\s-]?\d{4,5}-?\d{4}$/, {
     message: 'Telefone inválido',
   }),
+  role: z.enum(['USER', 'ADMIN']).default('USER'),
 });
 
 type RegisterBodySchema = z.infer<typeof registerBodySchema>;
@@ -30,13 +32,13 @@ export class RegisterUserController {
   @Post()
   @UsePipes(new ZodValidationPipe(registerBodySchema))
   async handle(@Body() body: RegisterBodySchema) {
-    const { name, email, password, phone } = body;
+    const { name, email, password, phone, role } = body;
     const result = await this.registerUser.execute({
       name,
       email,
       password,
       phone,
-      role: 'USER',
+      role: Role[role],
       addresses: [],
     });
 

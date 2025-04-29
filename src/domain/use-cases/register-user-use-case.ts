@@ -6,6 +6,7 @@ import { UserAlreadyExists } from './errors/user-already-exists-error';
 import { Address } from '../entities/address';
 import { HashEncoderDecoder } from 'src/core/helpers/hashEncoder';
 import { Injectable } from '@nestjs/common';
+import { AddressesWatchedList } from '../entities/address-watched-list';
 
 export type Role = 'USER' | 'ADMIN';
 export interface registerUserUseCaseRequest {
@@ -42,7 +43,14 @@ export class RegisterUserUseCase {
     }
     const hashedPassword = await this.hashEncoderDecoder.encode(password);
     const user = new User(
-      { name, email, password: hashedPassword, phone, role, addresses },
+      {
+        name,
+        email,
+        password: hashedPassword,
+        phone,
+        role,
+        addresses: new AddressesWatchedList(addresses),
+      },
       id,
     );
     await this.userRepository.create(user);

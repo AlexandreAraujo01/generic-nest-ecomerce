@@ -6,14 +6,13 @@ import {
   ForbiddenException,
   HttpCode,
   Post,
-  UsePipes,
 } from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { User } from '@/infra/decorators/user.decorator';
-import { AuthetificationSchema } from '@/infra/auth/services/auth.service';
-import { Address } from '@/domain/entities/address';
+import { User } from '@/infra/decorators/user.decorator'; // Aqui vem os dados do usuário
+import { AuthetificationSchema } from '@/infra/auth/services/auth.service'; // Tipagem de dados do usuário
 import { NotAllowedError } from '@/domain/use-cases/errors/not-allowed-error';
+import { Address } from '@/domain/entities/address';
 
 export const AddressSchema = z.object({
   street: z.string().min(1, 'Street is required'),
@@ -29,33 +28,38 @@ const updateUserControllerBodySchema = z.object({
   name: z.string().optional(),
   password: z.string().optional(),
   phone: z.string().optional(),
-  address: z.array(AddressSchema),
+  address: z.array(AddressSchema).optional(),
 });
 
 export type UpdateUserControllerBodySchema = z.infer<
   typeof updateUserControllerBodySchema
 >;
 
-@Controller('/user/update')
+const bodyValidationPipe = new ZodValidationPipe(
+  updateUserControllerBodySchema,
+);
+
+@Controller('/accounts/update')
 export class UpdateUserController {
   constructor(private updateUserUseCase: UpdateUserUseCase) {}
+
   @HttpCode(204)
   @Post()
-  @UsePipes(new ZodValidationPipe(updateUserControllerBodySchema))
+  //@UsePipes(new ZodValidationPipe(updateUserControllerBodySchema))
   async handle(
-    @Body() body: UpdateUserControllerBodySchema,
-    @User() user: AuthetificationSchema,
+    @User() user: AuthetificationSchema, // Dados do usuário
+    @Body(bodyValidationPipe) body: UpdateUserControllerBodySchema, // Corpo da requisição
   ) {
     const { email, name, password, phone, userId, address } = body;
     const { sub } = user;
     const result = await this.updateUserUseCase.execute({
       email,
       userId,
-      addresses: address.map((value) => new Address(value)),
+      addresses: address ? address.map((value) => new Address(value)) : [],
       name,
       password,
       phone,
-      userLoggedId: sub.toString(),
+      userLoggedId: sub.value.toString(),
     });
 
     if (result.isLeft()) {

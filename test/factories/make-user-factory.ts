@@ -38,5 +38,6 @@ export class MakeUserFactoryPrisma {
     await this.prisma.user.create({
       data: PrismaUserMapper.ToPrisma(user),
     });
+    return user;
   }
 }
