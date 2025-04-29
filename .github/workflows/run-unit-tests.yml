@@ -3,7 +3,7 @@ name: Run Unit Tests
 on:
   push:
     branches:
-        - main
+      - main
 
 jobs:
   run-unit-tests:
@@ -11,9 +11,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - uses: actions/setup-node@v3
         with:
           node-version: 22
           cache: 'npm'
+
       - run: npm ci
+
+      - name: Create fake jwtConstants
+        run: |
+          mkdir -p src/infra/auth
+          echo "export const jwtConstants = { secret: 'test-secret-constant' };" > src/infra/auth/constants.ts
+
       - run: npm run test
