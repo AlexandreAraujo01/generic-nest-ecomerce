@@ -1,5 +1,4 @@
 import { config } from 'dotenv';
-
 import { randomUUID } from 'node:crypto';
 import { execSync } from 'node:child_process';
 import { afterAll, beforeAll } from 'vitest';

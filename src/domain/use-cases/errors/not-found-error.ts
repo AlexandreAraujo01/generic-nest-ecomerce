@@ -1,5 +1,5 @@
 export class NotFoundError extends Error {
-  constructor() {
-    super('Not Found')
+  constructor(message = 'Value not found') {
+    super(message);
   }
 }

@@ -3,7 +3,7 @@ export abstract class WatchedList<T> {
   private initialItemsList: T[];
   private currentItemsList: T[];
   private removedItemsList: T[];
-  constructor(private items: T[]) {
+  constructor(items: T[]) {
     this.currentItemsList = [...items];
     this.initialItemsList = [...items];
     this.newItemsList = [];
