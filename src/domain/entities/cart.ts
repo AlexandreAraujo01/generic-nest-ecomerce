@@ -6,6 +6,8 @@ import { CartItemWatchedList } from '@/core/entities/cart-items-watched-list';
 export interface CartProps {
   items: CartItemWatchedList;
   userId: UniqueEntityID;
+  createdAt: Date
+  updatedAt?: Date
 }
 
 export class Cart extends Entity<CartProps> {
@@ -13,28 +15,44 @@ export class Cart extends Entity<CartProps> {
     super(props, id);
   }
 
-  getCurrentItems(): CartItem[] {
+
+  get currentItems(): CartItem[] {
     return this.props.items.currentItems;
   }
 
-  getNewItems(): CartItem[] {
+  get newItems(): CartItem[] {
     return this.props.items.newItems;
   }
 
-  getRemovedItems(): CartItem[] {
+  get removedItems(): CartItem[] {
     return this.props.items.removedItems;
   }
 
-  getInitialItems(): CartItem[] {
+  get initialItems(): CartItem[] {
     return this.props.items.initialItems;
   }
 
-  getAlteredItems(): CartItem[] {
+  get alteredItems(): CartItem[] {
     return this.props.items.alteredItems;
   }
 
-  getUserId(): UniqueEntityID {
+  get userId(): UniqueEntityID {
     return this.props.userId;
+  }
+
+  get createdAt(): Date {
+    return this.props.createdAt
+  }
+
+  get updatedAt(): Date | null {
+    if(!this.props.updatedAt){
+      return null
+    }
+    return this.props.updatedAt
+  }
+
+  set updatedAt(updatedAt: Date){
+    this.props.updatedAt = updatedAt
   }
 
   addItem(item: CartItem) {

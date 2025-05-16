@@ -46,11 +46,6 @@ export class RemoveProductToCartUseCase {
     );
 
     if (!productExists || productExists?.available === false) {
-      console.log(
-        productExists,
-        productExists?.available,
-        'productExists.available',
-      );
       return left(new NotFoundError('product not available'));
     }
 

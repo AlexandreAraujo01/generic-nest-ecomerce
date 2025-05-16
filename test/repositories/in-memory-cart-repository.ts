@@ -5,10 +5,11 @@ import { CartItem } from '@/domain/entities/cartItem';
 import { CartRepository } from '@/domain/repositories/cart-repository';
 
 export class InMemoryCartRepository implements CartRepository {
+  
   public items: Cart[] = [];
 
   async findByUserId(userId: UniqueEntityID): Promise<Cart | null> {
-    const cart = this.items.find((item) => item.getUserId().equals(userId));
+    const cart = this.items.find((item) => item.userId.equals(userId));
     if (!cart) {
       return null;
     }
@@ -22,21 +23,18 @@ export class InMemoryCartRepository implements CartRepository {
     }
     return cart;
   }
-  async create(
-    userId: UniqueEntityID,
-    items?: CartItem[],
-  ): Promise<Cart | null> {
-    const cartAlreadyExists = await this.findById(userId);
-    if (cartAlreadyExists) {
-      return null;
+
+  async create(cart: Cart): Promise<Cart | null> {
+    const cartAlreadyExist = this.items.find((item) => item.userId.equals(cart.userId));
+    if(cartAlreadyExist){
+      return null
     }
-    const cart = new Cart({
-      userId,
-      items: new CartItemWatchedList(items || []),
-    });
-    this.items.push(cart);
-    return cart;
+
+    this.items.push(cart)
+    return cart
   }
+
+  
   delete(cartId: UniqueEntityID): void {
     const cartIndex = this.items.findIndex((item) => item.id === cartId);
     this.items.splice(cartIndex, 1);

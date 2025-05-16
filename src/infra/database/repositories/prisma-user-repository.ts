@@ -15,9 +15,6 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async delete(userId: UniqueEntityID): Promise<void> {
-    // Adiciona o console.log aqui para verificar o tipo e o valor de userId
-    console.log('Tipo de userId:', typeof userId);
-    console.log('Valor de userId:', userId);
 
     await this.prisma.user.delete({
       where: {

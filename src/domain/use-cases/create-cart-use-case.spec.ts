@@ -38,11 +38,12 @@ describe('Create cart use case', () => {
     const response = await sut.execute({
       items: products,
       userId: user.id.toString(),
+      createdAt: new Date(),
     });
 
-    const currentItems = inMemorycartRepository.items[0].getCurrentItems();
-    const initialItems = inMemorycartRepository.items[0].getInitialItems();
-    const userId = inMemorycartRepository.items[0].getUserId();
+    const currentItems = inMemorycartRepository.items[0].currentItems;
+    const initialItems = inMemorycartRepository.items[0].initialItems;
+    const userId = inMemorycartRepository.items[0].userId;
 
     expect(response.isRight()).toBe(true);
     expect(inMemorycartRepository.items).toHaveLength(1);

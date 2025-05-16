@@ -74,7 +74,6 @@ describe('Update Product (E2E)', () => {
         id: productCreated.id.toString(),
       },
     });
-    console.log(response.body, 'response');
     expect(response.statusCode).toEqual(204);
     expect(changedProduct).toEqual(
       expect.objectContaining({

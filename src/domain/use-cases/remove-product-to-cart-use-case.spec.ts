@@ -43,6 +43,7 @@ describe('Add product to cart use case', () => {
     const cart = new Cart({
       items: new CartItemWatchedList(products),
       userId: user.id,
+      createdAt: new Date()
     });
 
     inMemorycartRepository.items.push(cart);
@@ -54,9 +55,9 @@ describe('Add product to cart use case', () => {
     });
 
     expect(response.isRight()).toBe(true);
-    expect(inMemorycartRepository.items[0].getUserId()).toEqual(user.id);
+    expect(inMemorycartRepository.items[0].userId).toEqual(user.id);
     expect(
-      inMemorycartRepository.items[0].getRemovedItems()[0].productName,
+      inMemorycartRepository.items[0].removedItems[0].productName,
     ).toEqual('product example 3');
   });
 });

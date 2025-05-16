@@ -19,7 +19,6 @@ describe('Cart item watched list', () => {
     const newCartItem = new CartItem({ item: newProduct, quantity: 1 });
     sut.addItem(newCartItem);
 
-    console.log(newCartItem.productName, 'New cart item');
     expect(sut.currentItems).toHaveLength(2);
     expect(sut.newItems).toHaveLength(1);
     expect(sut.newItems[0].productName).toEqual('New item 1');

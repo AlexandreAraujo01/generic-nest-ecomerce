@@ -7,10 +7,13 @@ import { Either, left, right } from '@/core/types/either';
 import { NotFoundError } from './errors/not-found-error';
 import { Cart } from '../entities/cart';
 import { CartAlreadyExists } from './errors/cart-already-exists';
+import { CartItemWatchedList } from '@/core/entities/cart-items-watched-list';
 
 export interface CreateCartUseCaseRequest {
   userId: string;
   items: CartItem[];
+  createdAt: Date,
+  updatedAt?: Date,
 }
 
 export type CreateCartUseCaseResponse = Either<
@@ -28,6 +31,8 @@ export class CreateCartUseCase {
   async execute({
     userId,
     items,
+    createdAt,
+    updatedAt
   }: CreateCartUseCaseRequest): Promise<CreateCartUseCaseResponse> {
     const user = await this.userRepository.findById(new UniqueEntityID(userId));
     if (!user) {
@@ -43,9 +48,15 @@ export class CreateCartUseCase {
 
     const products = promisesProduct.filter((item) => item != null);
 
+    const newCart = new Cart({
+      items: new CartItemWatchedList(products),
+      userId: new UniqueEntityID(userId),
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+    })
+
     const cart = await this.cartRepository.create(
-      new UniqueEntityID(userId),
-      products,
+      newCart
     );
 
     if (!cart) {

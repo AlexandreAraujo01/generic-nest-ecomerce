@@ -4,8 +4,7 @@ import { CartItem } from '../entities/cartItem';
 
 export abstract class CartRepository {
   abstract create(
-    userId: UniqueEntityID,
-    items?: CartItem[],
+    cart: Cart
   ): Promise<Cart | null>;
 
   abstract delete(cartId: UniqueEntityID): void;
