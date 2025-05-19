@@ -45,10 +45,9 @@ export class UpdateUserController {
 
   @HttpCode(204)
   @Post()
-  //@UsePipes(new ZodValidationPipe(updateUserControllerBodySchema))
   async handle(
-    @User() user: AuthetificationSchema, // Dados do usuário
-    @Body(bodyValidationPipe) body: UpdateUserControllerBodySchema, // Corpo da requisição
+    @User() user: AuthetificationSchema,
+    @Body(bodyValidationPipe) body: UpdateUserControllerBodySchema,
   ) {
     const { email, name, password, phone, userId, address } = body;
     const { sub } = user;

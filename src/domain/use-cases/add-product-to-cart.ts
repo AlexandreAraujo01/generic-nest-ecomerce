@@ -7,6 +7,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { Either, left, right } from '@/core/types/either';
 import { Cart } from '../entities/cart';
 import { NotFoundError } from './errors/not-found-error';
+import { CartMapper } from '@/infra/database/mappers/prisma-cart-mapper';
 
 export interface AddProductToCartUseCaseRequest {
   productId: string;
@@ -37,6 +38,7 @@ export class AddProductToCartUseCase {
       new UniqueEntityID(userId),
     );
 
+
     if (!cart) {
       return left(new NotFoundError('cart not found'));
     }
@@ -55,6 +57,7 @@ export class AddProductToCartUseCase {
     });
 
     cart.addItem(cartItem);
+    await this.cartRepository.insertItems(cart)
     return right(cart);
   }
 }

@@ -8,6 +8,7 @@ import { NotFoundError } from './errors/not-found-error';
 import { Cart } from '../entities/cart';
 import { CartAlreadyExists } from './errors/cart-already-exists';
 import { CartItemWatchedList } from '@/core/entities/cart-items-watched-list';
+import { Injectable } from '@nestjs/common';
 
 export interface CreateCartUseCaseRequest {
   userId: string;
@@ -21,6 +22,7 @@ export type CreateCartUseCaseResponse = Either<
   Cart
 >;
 
+@Injectable()
 export class CreateCartUseCase {
   constructor(
     private userRepository: UserRepository,
@@ -54,6 +56,7 @@ export class CreateCartUseCase {
       createdAt: createdAt,
       updatedAt: updatedAt,
     })
+
 
     const cart = await this.cartRepository.create(
       newCart

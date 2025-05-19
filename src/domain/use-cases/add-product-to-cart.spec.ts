@@ -26,7 +26,7 @@ describe('Add product to cart use case', () => {
     );
   });
 
-  it('should be able to add a product in cart', async () => {
+  it('should be able to add product on cart', async () => {
     const user = makeUserFactory({ name: 'John Doe' });
     await inMemoryuserRepository.create(user);
     const products: CartItem[] = [];
@@ -53,7 +53,7 @@ describe('Add product to cart use case', () => {
       productQuantity: 1,
       userId: user.id.toString(),
     });
-
+    
     expect(response.isRight()).toBe(true);
     expect(inMemorycartRepository.items[0].userId).toEqual(user.id);
     expect(

@@ -5,7 +5,6 @@ import { CartItem } from '@/domain/entities/cartItem';
 import { CartRepository } from '@/domain/repositories/cart-repository';
 
 export class InMemoryCartRepository implements CartRepository {
-  
   public items: Cart[] = [];
 
   async findByUserId(userId: UniqueEntityID): Promise<Cart | null> {
@@ -40,17 +39,15 @@ export class InMemoryCartRepository implements CartRepository {
     this.items.splice(cartIndex, 1);
   }
 
-  async insertItems(
-    items: CartItem[],
-    cartId: UniqueEntityID,
-  ): Promise<Cart | null> {
-    const cart = await this.findById(cartId);
-    if (!cart) {
-      return null;
+  async insertItems(cart: Cart): Promise<Cart | null> {
+    const cartExistsIndex = this.items.findIndex((item) => item.id.equals(cart.id))
+    if(cartExistsIndex < 0){
+      return null
     }
-    items.map((item) => cart.addItem(item));
-    return cart;
+    this.items[cartExistsIndex] = cart
+    return cart
   }
+
   async removeItems(
     items: CartItem[],
     cartId: UniqueEntityID,

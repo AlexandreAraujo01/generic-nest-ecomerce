@@ -14,6 +14,10 @@ import { UpdateUserController } from './controllers/update-user.controller';
 import { UpdateUserUseCase } from '@/domain/use-cases/update-user-use-case';
 import { UpdateProductController } from './controllers/update-product.controller';
 import { UpdateProductUseCase } from '@/domain/use-cases/update-product-use-case';
+import { CreateCartController } from './controllers/create-cart.controller';
+import { CreateCartUseCase } from '@/domain/use-cases/create-cart-use-case';
+import { AddProductToCartController } from './controllers/add-product-to-cart.controller';
+import { AddProductToCartUseCase } from '@/domain/use-cases/add-product-to-cart';
 @Module({
   imports: [DatabaseModule],
   controllers: [
@@ -23,6 +27,8 @@ import { UpdateProductUseCase } from '@/domain/use-cases/update-product-use-case
     FetchProductsByNameController,
     UpdateUserController,
     UpdateProductController,
+    CreateCartController,
+    AddProductToCartController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -35,6 +41,8 @@ import { UpdateProductUseCase } from '@/domain/use-cases/update-product-use-case
       useClass: BcrypyEncoderDecoder,
     },
     UpdateProductUseCase,
+    CreateCartUseCase,
+    AddProductToCartUseCase,
   ],
 
   exports: [
@@ -45,6 +53,8 @@ import { UpdateProductUseCase } from '@/domain/use-cases/update-product-use-case
     ListProductsByNameUseCase,
     UpdateUserUseCase,
     UpdateProductUseCase,
+    CreateCartUseCase,
+    AddProductToCartUseCase,
   ],
 })
 export class HttpModule {}

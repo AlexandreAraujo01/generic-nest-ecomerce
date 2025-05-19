@@ -75,4 +75,15 @@ describe('Cart item watched list', () => {
     expect(sut.newItems).toHaveLength(1);
     expect(sut.removedItems).toHaveLength(0);
   });
+
+  it('testing', () => {
+    const newProduct = MakeProductFactory({ name: 'New item 1' });
+    const newCartItem = new CartItem({ item: newProduct, quantity: 1 });
+    sut.addItem(newCartItem);
+
+    sut.addItem(newCartItem)
+
+    sut.addItem(new CartItem({item: initialProduct, quantity: 1}))
+
+  })
 });

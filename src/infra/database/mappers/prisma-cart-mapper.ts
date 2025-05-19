@@ -12,16 +12,51 @@ interface PrismaCartWithCartItems extends PrismaCart{
   cartItems: PrismaCartItemWithProduct[];
 }
 
+interface PrismaCartAndRemovedAndAlteredItems {
+    prismaCart: Prisma.CartUncheckedCreateInput,
+    alteredItems:  PrismaCartItem[],
+    removedItems:  PrismaCartItem[]
+    newItems: PrismaCartItem[]
+}
+
 export class CartMapper {
 
-    static toPrisma(cart: Cart): Prisma.CartUncheckedCreateInput {
-        return {
+    static toPrisma(cart: Cart): PrismaCartAndRemovedAndAlteredItems {
+
+    const newItemsPrisma = cart.newItems
+
+    const newItems = cart.newItems
+        .map((item) => CartItemMapper.toPrismaOrNull(item, cart.id))
+        .filter((item) => item !== null)
+
+    const alteredItems = cart.alteredItems
+        .map((item) => CartItemMapper.toPrismaOrNull(item, cart.id))
+        .filter((item) => item !== null)
+
+
+    const removedItems = cart.removedItems
+        .map((item) => CartItemMapper.toPrismaOrNull(item, cart.id))
+        .filter((item) => item !== null)
+
+
+    return {
+        prismaCart: {
             id: cart.id.toString(),
-            userId: cart.UserId.toString(),
+            userId: cart.userId.toString(),
             createdAt: cart.createdAt,
-            updatedAt: cart.updatedAt
-        }
+            updatedAt: cart.updatedAt,
+            cartItems: {
+                create: newItemsPrisma.map((item) =>
+                    CartItemMapper.toPrismaWithoutCartId(item)
+    )
+            },
+        },
+        alteredItems,
+        removedItems,
+        newItems
     }
+}
+
 
 
     static toDomain(prismaCart: PrismaCartWithCartItems): Cart {
@@ -31,6 +66,6 @@ export class CartMapper {
             items: new CartItemWatchedList(domainCartItems),
             createdAt: prismaCart.createdAt,
             updatedAt: prismaCart.updatedAt ?? undefined,
-        })
+        }, new UniqueEntityID(prismaCart.id))
     }
 }

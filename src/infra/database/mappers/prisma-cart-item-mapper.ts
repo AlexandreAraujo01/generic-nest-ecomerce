@@ -11,7 +11,8 @@ interface PrismaCartItemWithProduct extends PrismaCartItem {
 
 
 export class CartItemMapper {
-    static toPrisma(cartItem: CartItem, cartId: UniqueEntityID): Prisma.CartItemUncheckedCreateInput {
+    static toPrisma(cartItem: CartItem, cartId: UniqueEntityID): Prisma.CartItemUncheckedCreateInput{
+
         return {
             id: cartItem.id.toString(),
             cartId: cartId.toString(),
@@ -20,11 +21,38 @@ export class CartItemMapper {
         }
     }
 
+    static toPrismaWithoutCartId(cartItem: CartItem) {
+            return {
+                        id: cartItem.id.toString(),
+                        productId: cartItem.item.id.toString(),
+                        quantity: cartItem.quantity
+                    }
+    }
+
+    static toPrismaOrNull(cartItem: CartItem, cartId: UniqueEntityID): {
+                        id: string;
+                        cartId: string;
+                        productId: string;
+                        quantity: number;
+                        } | null {
+                            if (!cartItem.id) {
+                                return null
+                            }
+
+                            return {
+                                id: cartItem.id.toString(),
+                                cartId: cartId.toString(),
+                                productId: cartItem.item.id.toString(),
+                                quantity: cartItem.quantity
+                            }
+                    }
+
+
 
     static toDomain(prismaCartItem: PrismaCartItemWithProduct): CartItem {
         return new CartItem({
             quantity: prismaCartItem.quantity,
             item: new Product(prismaCartItem.product, new UniqueEntityID(prismaCartItem.productId))
-        })
+        }, new UniqueEntityID(prismaCartItem.id))
     }
 }

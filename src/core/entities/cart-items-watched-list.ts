@@ -33,48 +33,55 @@ export class CartItemWatchedList {
   }
 
   addItem(item: CartItem) {
-    const currentIndex = this.currentItemsList.findIndex((value) =>
-      this.compare(value, item),
-    );
+      const currentIndex = this.currentItemsList.findIndex((value) =>
+        this.compare(value, item),
+      );
 
-    if (currentIndex === -1) {
-      this.currentItemsList.push(item.clone());
-    } else {
-      this.currentItemsList[currentIndex].quantity += item.quantity;
-    }
+      if (currentIndex === -1) {
+        // Item ainda não está no carrinho
+        this.currentItemsList.push(item.clone());
+      } else {
+        // Item já está no carrinho, incrementa com a quantidade recebida
+        this.currentItemsList[currentIndex].quantity += item.quantity;
+      }
 
-    const removedIndex = this.removedItemsList.findIndex((value) =>
-      this.compare(value, item),
-    );
-    if (removedIndex !== -1) {
-      this.removedItemsList.splice(removedIndex, 1);
-    }
+      // Remove dos removidos (caso esteja voltando)
+      const removedIndex = this.removedItemsList.findIndex((value) =>
+        this.compare(value, item),
+      );
+      if (removedIndex !== -1) {
+        this.removedItemsList.splice(removedIndex, 1);
+      }
 
-    const initiallyExisted = this.initialItemsList.some((value) =>
-      this.compare(value, item),
-    );
-    const newIndex = this.newItemsList.findIndex((value) =>
-      this.compare(value, item),
-    );
-
-    if (!initiallyExisted && newIndex === -1) {
-      this.newItemsList.push(item.clone());
-    } else if (initiallyExisted) {
-      const original = this.initialItemsList.find((value) =>
+      const initiallyExisted = this.initialItemsList.some((value) =>
         this.compare(value, item),
       );
       const current = this.currentItemsList.find((value) =>
         this.compare(value, item),
       );
 
-      if (original && current && original.quantity !== current.quantity) {
-        const altered = current.clone();
-        this.updateOrAddAlteredItem(altered);
+      if (!initiallyExisted) {
+        // Novo item no carrinho
+        const newIndex = this.newItemsList.findIndex((value) =>
+          this.compare(value, item),
+        );
+        if (newIndex === -1) {
+          this.newItemsList.push(item.clone());
+        } else {
+          this.newItemsList[newIndex].quantity += item.quantity;
+        }
+      } else {
+        // Item já existia no carrinho e teve sua quantidade alterada
+        const original = this.initialItemsList.find((value) =>
+          this.compare(value, item),
+        );
+
+        if (original && current && original.quantity !== current.quantity) {
+          this.updateOrAddAlteredItem(current.clone());
+        }
       }
-    } else if (newIndex !== -1) {
-      this.newItemsList[newIndex].quantity += item.quantity;
-    }
   }
+
 
   removeItem(item: CartItem) {
     const currentIndex = this.currentItemsList.findIndex((value) =>
@@ -141,7 +148,7 @@ export class CartItemWatchedList {
   }
 
   private compare(A: CartItem, B: CartItem): boolean {
-    return A.productId === B.productId;
+    return A.productId.equals(B.productId);
   }
 
   public hasChanges(): boolean {

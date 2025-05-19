@@ -9,10 +9,7 @@ export abstract class CartRepository {
 
   abstract delete(cartId: UniqueEntityID): void;
 
-  abstract insertItems(
-    items: CartItem[],
-    cartId: UniqueEntityID,
-  ): Promise<Cart | null>;
+  abstract insertItems(cart: Cart): Promise<Cart | null>;
 
   abstract removeItems(
     items: CartItem[],
