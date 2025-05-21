@@ -11,10 +11,7 @@ export abstract class CartRepository {
 
   abstract insertItems(cart: Cart): Promise<Cart | null>;
 
-  abstract removeItems(
-    items: CartItem[],
-    cartId: UniqueEntityID,
-  ): Promise<Cart | null>;
+  abstract removeItems(cart: Cart): Promise<Cart | null>;
 
   abstract findById(cartId: UniqueEntityID): Promise<Cart | null>;
 

@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
 import { Product, ProductProps } from 'src/domain/entities/products';
 
-export function MakeProductFactory(
+export function makeProductFactory(
   props: Partial<ProductProps>,
   id?: UniqueEntityID,
 ): Product {
@@ -28,7 +28,7 @@ export class MakeProductFactoryPrisma {
   constructor(private prisma: PrismaService) {}
 
   async makePrismaProduct(props: Partial<ProductProps>, id?: string) {
-    const product = MakeProductFactory(props, new UniqueEntityID(id));
+    const product = makeProductFactory(props, new UniqueEntityID(id));
     await this.prisma.product.create({
       data: PrismaProductMapper.toPrisma(product),
     });

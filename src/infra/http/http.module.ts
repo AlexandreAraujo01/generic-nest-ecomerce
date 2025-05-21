@@ -18,6 +18,10 @@ import { CreateCartController } from './controllers/create-cart.controller';
 import { CreateCartUseCase } from '@/domain/use-cases/create-cart-use-case';
 import { AddProductToCartController } from './controllers/add-product-to-cart.controller';
 import { AddProductToCartUseCase } from '@/domain/use-cases/add-product-to-cart';
+import { FetchCartUseCase } from '@/domain/use-cases/fetch-user-cart';
+import { FetchUserCartItemsController } from './controllers/fetch-user-cart-items.controller';
+import { RemoveProductFromCartUseCase } from '@/domain/use-cases/remove-product-from-cart-use-case';
+import { RemoveProductFromCartController } from './controllers/remove-product-from-cart.controller';
 @Module({
   imports: [DatabaseModule],
   controllers: [
@@ -29,6 +33,8 @@ import { AddProductToCartUseCase } from '@/domain/use-cases/add-product-to-cart'
     UpdateProductController,
     CreateCartController,
     AddProductToCartController,
+    FetchUserCartItemsController,
+    RemoveProductFromCartController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -36,13 +42,15 @@ import { AddProductToCartUseCase } from '@/domain/use-cases/add-product-to-cart'
     RegisterProductUseCase,
     ListProductsByNameUseCase,
     UpdateUserUseCase,
+    UpdateProductUseCase,
+    CreateCartUseCase,
+    AddProductToCartUseCase,
+    RemoveProductFromCartUseCase,
+    FetchCartUseCase,
     {
       provide: HashEncoderDecoder,
       useClass: BcrypyEncoderDecoder,
     },
-    UpdateProductUseCase,
-    CreateCartUseCase,
-    AddProductToCartUseCase,
   ],
 
   exports: [

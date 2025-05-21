@@ -3,7 +3,7 @@ import { CreateCartUseCase } from './create-cart-use-case';
 import { InMemoryProductRepository } from 'test/repositories/in-memory-product-repository';
 import { InMemoryCartRepository } from 'test/repositories/in-memory-cart-repository';
 import { InMemoryUserRepository } from 'test/repositories/in-memory-user-repository';
-import { MakeProductFactory } from 'test/factories/make-product-factory';
+import { makeProductFactory } from 'test/factories/make-product-factory';
 import { makeUserFactory } from 'test/factories/make-user-factory';
 import { CartItem } from '../entities/cartItem';
 
@@ -29,7 +29,7 @@ describe('Create cart use case', () => {
     await inMemoryuserRepository.create(user);
     const products: CartItem[] = [];
     for (let i = 0; i < 3; i++) {
-      const product = MakeProductFactory({ name: `product example ${i + 1}` });
+      const product = makeProductFactory({ name: `product example ${i + 1}` });
       await inMemoryproductRepository.create(product);
       const cartItem = new CartItem({ item: product, quantity: 1 });
       products.push(cartItem);

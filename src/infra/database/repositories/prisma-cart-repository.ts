@@ -105,55 +105,47 @@ export class PrismaCartRepository implements CartRepository {
     }
 
 
-    async insertItems2(items: CartItem[], cartId: UniqueEntityID): Promise<Cart | null> {
-        const cart = await this.prisma.cart.findUnique({where: { id: cartId.toString() }, include: 
-        {
-            cartItems: {
-                include: {
-                    product: true
-                }
+    
+
+    async removeItems(cart: Cart): Promise<Cart | null> {
+        const cartExists = await this.prisma.cart.findUnique({
+            where: {
+                id: cart.id.toString()
             }
-        }})
-        if(!cart){
+        })
+
+        if(!cartExists){
             return null
         }
 
-        const cartDomain = CartMapper.toDomain(cart)
-        items.map(((item) => cartDomain.addItem(item)))
-        const {prismaCart, alteredItems, newItems} = CartMapper.toPrisma(cartDomain)
-
-
+        const {prismaCart, removedItems} = CartMapper.toPrisma(cart)
         await Promise.all(
-                    newItems.map(item =>
-                    this.prisma.cartItem.create({
-                        data: {
-                            cartId: cart.id.toString(),
-                            id: item.id,
-                            productId: item.productId,
-                            quantity: item.quantity,
-                        }
-                    })
-                    )
-                    )
-        
-                    
-        await Promise.all(
-            alteredItems.map(item =>
-                this.prisma.cartItem.update({
-                where: { id: item.id },
-                data: {
-                    cartId: item.cartId,
+            removedItems.map(async (item) => {
+                const productExist = await this.prisma.cartItem.findFirst({
+                where: {
                     productId: item.productId,
-                    quantity: item.quantity
+                    cartId: item.cartId
                 }
-                })
-            )
-            )
+                });
+
+                if (productExist) {
+                const decrementedQuantity = productExist.quantity - item.quantity;
+
+                if (decrementedQuantity <= 0) {
+                    const x = await this.prisma.cartItem.delete({ where: { id: productExist.id } });
+                } else {
+                    await this.prisma.cartItem.update({
+                    data: { quantity: decrementedQuantity },
+                    where: { id: productExist.id }
+                    });
+                }
+                }
+            })
+            );
+
 
         const idPrismaCart = prismaCart.id;
-        delete prismaCart.id;
 
-        
         const selectedCart = await this.prisma.cart.findUnique(
             {where: {id: idPrismaCart}, 
                     include: {
@@ -168,52 +160,8 @@ export class PrismaCartRepository implements CartRepository {
         if(!selectedCart){
             return null
         }
+
         return CartMapper.toDomain(selectedCart)
-        
-    }
-
-    async removeItems(items: CartItem[], cartId: UniqueEntityID): Promise<Cart | null> {
-        const cart = await this.prisma.cart.findUnique({where: { id: cartId.toString() }, include: 
-        {
-            cartItems: {
-                include: {
-                    product: true
-                }
-            }
-        }})
-        if(!cart){
-            return null
-        }
-
-        const cartDomain = CartMapper.toDomain(cart)
-        items.map(((item) => cartDomain.removeItem(item)))
-        await Promise.all(
-            items.map((item) => this.prisma.cartItem.delete({
-                where: {
-                    id: item.id.toString()
-                }
-            }))
-        )
-
-        const updatedCart = await this.prisma.cart.findUnique({
-            where: {
-                id: cartId.toString()
-            },
-            include: {
-                cartItems: {
-                    include: {
-                        product: true
-                    }
-                }
-            }
-
-        })
-
-        if(!updatedCart){
-            return null
-        }
-        
-        return CartMapper.toDomain(updatedCart)
         
     }
 

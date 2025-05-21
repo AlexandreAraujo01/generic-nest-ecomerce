@@ -5,7 +5,7 @@ import { PrismaService } from '@/infra/database/services/prisma-service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
-import { MakeProductFactory } from 'test/factories/make-product-factory';
+import { makeProductFactory } from 'test/factories/make-product-factory';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 
 describe('Fetch products by category (E2E)', () => {
@@ -32,7 +32,7 @@ describe('Fetch products by category (E2E)', () => {
 
   it('[GET] /:category/products/:page → It must be able to fetch products by category', async () => {
     for (let i = 0; i < 22; i++) {
-      const product = MakeProductFactory({
+      const product = makeProductFactory({
         name: `product ${i}`,
         category: `t-shirt`,
       });

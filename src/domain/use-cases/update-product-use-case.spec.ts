@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { MakeProductFactory } from 'test/factories/make-product-factory';
+import { makeProductFactory } from 'test/factories/make-product-factory';
 import { InMemoryProductRepository } from 'test/repositories/in-memory-product-repository';
 import { UpdateProductUseCase } from './update-product-use-case';
 import { NotFoundError } from './errors/not-found-error';
@@ -13,7 +13,7 @@ describe('Update product use case', () => {
   });
 
   it('should be able to update an existing product', async () => {
-    const product = MakeProductFactory({ name: 'Product 1', price: 299.99 });
+    const product = makeProductFactory({ name: 'Product 1', price: 299.99 });
     inMemoryProductRepository.items.push(product);
 
     const response = await sut.execute({
@@ -34,7 +34,7 @@ describe('Update product use case', () => {
   });
 
   it('should not be allowed to update a product with a non existing id', async () => {
-    const product = MakeProductFactory({ name: 'Product 1', price: 299.99 });
+    const product = makeProductFactory({ name: 'Product 1', price: 299.99 });
     inMemoryProductRepository.items.push(product);
     const response = await sut.execute({
       price: 199.99,

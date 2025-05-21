@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CartItemWatchedList } from './cart-items-watched-list';
-import { MakeProductFactory } from 'test/factories/make-product-factory';
+import { makeProductFactory } from 'test/factories/make-product-factory';
 import { CartItem } from '@/domain/entities/cartItem';
 
 let sut: CartItemWatchedList;
 
-const initialProduct = MakeProductFactory({ name: 'initial Item 1' });
+const initialProduct = makeProductFactory({ name: 'initial Item 1' });
 
 describe('Cart item watched list', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('Cart item watched list', () => {
   });
 
   it('Should be able to add a new item on cart', () => {
-    const newProduct = MakeProductFactory({ name: 'New item 1' });
+    const newProduct = makeProductFactory({ name: 'New item 1' });
     const newCartItem = new CartItem({ item: newProduct, quantity: 1 });
     sut.addItem(newCartItem);
 
@@ -25,7 +25,7 @@ describe('Cart item watched list', () => {
   });
 
   it('Should be able to increase quantity of a product that is already in cart', () => {
-    const newProduct = MakeProductFactory({ name: 'New item 1' });
+    const newProduct = makeProductFactory({ name: 'New item 1' });
     const newCartItem = new CartItem({ item: newProduct, quantity: 1 });
     sut.addItem(newCartItem);
     sut.addItem(newCartItem);
@@ -45,7 +45,7 @@ describe('Cart item watched list', () => {
 
   it('should be able to decrement an item quantity', () => {
     const productItem = new CartItem({ item: initialProduct, quantity: 1 });
-    const newProduct = MakeProductFactory({ name: 'new product item x' });
+    const newProduct = makeProductFactory({ name: 'new product item x' });
     const newProductItem = new CartItem({
       item: newProduct,
       quantity: 2,
@@ -59,14 +59,14 @@ describe('Cart item watched list', () => {
   });
 
   it('should be able to delete an item from the cart if its quantity is 0 or below', () => {
-    const newProduct = MakeProductFactory({ name: 'new product item' });
+    const newProduct = makeProductFactory({ name: 'new product item' });
     sut.addItem(new CartItem({ item: newProduct, quantity: 1 }));
     sut.removeItem(new CartItem({ item: newProduct, quantity: 1 }));
     expect(sut.removedItems.length).toEqual(0);
   });
 
   it('Should be able to add a new item on cart even it was removed before', () => {
-    const newProduct = MakeProductFactory({ name: 'New item 1' });
+    const newProduct = makeProductFactory({ name: 'New item 1' });
     const newCartItem = new CartItem({ item: newProduct, quantity: 1 });
     sut.addItem(newCartItem);
     sut.removeItem(newCartItem);
@@ -77,7 +77,7 @@ describe('Cart item watched list', () => {
   });
 
   it('testing', () => {
-    const newProduct = MakeProductFactory({ name: 'New item 1' });
+    const newProduct = makeProductFactory({ name: 'New item 1' });
     const newCartItem = new CartItem({ item: newProduct, quantity: 1 });
     sut.addItem(newCartItem);
 

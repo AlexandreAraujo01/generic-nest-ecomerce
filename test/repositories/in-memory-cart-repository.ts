@@ -48,15 +48,12 @@ export class InMemoryCartRepository implements CartRepository {
     return cart
   }
 
-  async removeItems(
-    items: CartItem[],
-    cartId: UniqueEntityID,
-  ): Promise<Cart | null> {
-    const cart = await this.findById(cartId);
-    if (!cart) {
-      return null;
+  async removeItems(cart: Cart): Promise<Cart | null> {
+    const cartExistsIndex = this.items.findIndex((item) => item.id.equals(cart.id))
+    if(cartExistsIndex < 0){
+      return null
     }
-    items.map((item) => cart.removeItem(item));
-    return cart;
+    this.items[cartExistsIndex] = cart
+    return cart
   }
 }

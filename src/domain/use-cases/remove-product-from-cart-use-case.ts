@@ -8,16 +8,16 @@ import { Either, left, right } from '@/core/types/either';
 import { Cart } from '../entities/cart';
 import { NotFoundError } from './errors/not-found-error';
 
-export interface RemoveProductToCartUseCaseRequest {
+export interface RemoveProductFromCartUseCaseRequest {
   productId: string;
   userId: string;
   productQuantity: number;
 }
 
-export type RemoveProductToCartUseCaseResponse = Either<NotFoundError, Cart>;
+export type RemoveProductFromCartUseCaseResponse = Either<NotFoundError, Cart>;
 
 @Injectable()
-export class RemoveProductToCartUseCase {
+export class RemoveProductFromCartUseCase {
   constructor(
     private productRepository: ProductRepository,
     private cartRepository: CartRepository,
@@ -28,7 +28,7 @@ export class RemoveProductToCartUseCase {
     userId,
     productId,
     productQuantity,
-  }: RemoveProductToCartUseCaseRequest): Promise<RemoveProductToCartUseCaseResponse> {
+  }: RemoveProductFromCartUseCaseRequest): Promise<RemoveProductFromCartUseCaseResponse> {
     const user = await this.userRepository.findById(new UniqueEntityID(userId));
     if (!user) {
       return left(new NotFoundError('user not found'));
@@ -36,6 +36,7 @@ export class RemoveProductToCartUseCase {
     const cart = await this.cartRepository.findByUserId(
       new UniqueEntityID(userId),
     );
+
 
     if (!cart) {
       return left(new NotFoundError('cart not found'));
@@ -54,7 +55,9 @@ export class RemoveProductToCartUseCase {
       quantity: productQuantity,
     });
 
+
     cart.removeItem(cartItem);
+    await this.cartRepository.removeItems(cart)
     return right(cart);
   }
 }
