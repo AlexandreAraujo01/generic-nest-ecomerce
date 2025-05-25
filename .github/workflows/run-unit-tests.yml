@@ -20,7 +20,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: docker
         ports:
-          - 5433:5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -40,6 +40,21 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=postgresql://postgres:docker@localhost:5432/generic-e-comerce-pg?schema=public" >> .env
+          echo "JWT_SECRET=fake-jwt-secret" >> .env
+          echo "NODE_ENV=dev" >> .env
+          echo "PORT=3333" >> .env
+
+      - name: Generate Prisma Client
+        run: pnpm prisma generate
+
+      - name: Run migrations
+        run: pnpm prisma migrate deploy
+        env:
+          DATABASE_URL: postgresql://postgres:docker@localhost:5432/generic-e-comerce-pg?schema=public
 
       - name: Run tests
         run: |
