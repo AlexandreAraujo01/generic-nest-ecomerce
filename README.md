@@ -1,4 +1,6 @@
-# generic-nest-e-comerce PT-BR
+# generic-nest-ecomerce 
+
+PT-BR
 
 Um backend robusto e escalável para e-commerce, construído com [NestJS](https://nestjs.com/), usando [Prisma](https://www.prisma.io/) para ORM, com suporte a Redis para cache básico, testes unitários e E2E, e orquestrado via Docker.
 
@@ -40,7 +42,7 @@ Um backend robusto e escalável para e-commerce, construído com [NestJS](https:
 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/generic-nest-e-comerce.git
+git clone https://github.com/AlexandreAraujo01/generic-nest-ecomerce.git
 cd generic-nest-e-comerce
 
 ```
@@ -63,7 +65,7 @@ pnpm install
 5. Gere o Prisma Client e execute as migrations
 ```
 pnpm prisma generate
-pnpm prisma migrate deploy
+pnpm prisma migrate dev
 ```
 
 6. Rode a aplicação
