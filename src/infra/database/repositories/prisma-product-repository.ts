@@ -4,10 +4,11 @@ import { ProductRepository } from '@/domain/repositories/product-repository';
 import { PrismaProductMapper } from '../mappers/prisma-product-mapper';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../services/prisma-service';
+import { CacheRepository } from '@/infra/cache/cache-repository';
 
 @Injectable()
 export class PrismaProductRepository implements ProductRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private cacheRepository: CacheRepository) {}
   async create(product: Product): Promise<void> {
     await this.prisma.product.create({
       data: PrismaProductMapper.toPrisma(product),
@@ -21,6 +22,14 @@ export class PrismaProductRepository implements ProductRepository {
     });
   }
   async findById(productId: UniqueEntityID): Promise<Product | null> {
+    const cacheKey = `product:${productId.toString()}`
+    const cached = await this.cacheRepository.get(cacheKey)
+    if(cached){
+      const raw = JSON.parse(cached)
+      
+      const x = PrismaProductMapper.fromJSON(raw)
+      return x
+    }
     const result = await this.prisma.product.findUnique({
       where: {
         id: productId.toString(),
@@ -29,7 +38,9 @@ export class PrismaProductRepository implements ProductRepository {
     if (!result) {
       return null;
     }
-    return PrismaProductMapper.toDomain(result);
+    const productDetails = PrismaProductMapper.toDomain(result);
+    await this.cacheRepository.set(cacheKey, JSON.stringify(productDetails))
+    return productDetails
   }
   async save(product: Product): Promise<Product> {
     const result = await this.prisma.product.update({
@@ -38,6 +49,7 @@ export class PrismaProductRepository implements ProductRepository {
         id: product.id.toString(),
       },
     });
+    this.cacheRepository.delete(`product:${product.id.toString()}`)
     return PrismaProductMapper.toDomain(result);
   }
   async findByCategory(

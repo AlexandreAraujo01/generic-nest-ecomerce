@@ -76,6 +76,7 @@ describe('Add product to cart (E2E)', () => {
         quantity: 1
       });
 
+
     const cart = await prisma.cart.findUnique({
       where: {userId: user?.id}
     })

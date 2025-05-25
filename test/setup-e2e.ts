@@ -4,6 +4,7 @@ import { execSync } from 'node:child_process';
 import { afterAll, beforeAll } from 'vitest';
 import { envSchema } from 'src/env/env';
 import { PrismaClient } from 'prisma/generated/prisma';
+import { Redis } from 'ioredis';
 
 config({ path: '.env', override: true });
 config({ path: '.env.test', override: true });
@@ -11,6 +12,8 @@ config({ path: '.env.test', override: true });
 const env = envSchema.parse(process.env);
 
 const prisma = new PrismaClient();
+
+let redis: Redis;
 
 function generateUniqueDatabaseURL(schemaId: string) {
   if (!env.DATABASE_URL) {
@@ -30,6 +33,11 @@ beforeAll(async () => {
   const databaseURL = generateUniqueDatabaseURL(schemaId);
 
   process.env.DATABASE_URL = databaseURL;
+  process.env.REDIS_DB = '1'
+
+  redis = new Redis({host: env.REDIS_HOST, port: env.REDIS_PORT,db: env.REDIS_DB })
+
+  await redis.flushdb()
 
   execSync('npx prisma migrate deploy');
 });

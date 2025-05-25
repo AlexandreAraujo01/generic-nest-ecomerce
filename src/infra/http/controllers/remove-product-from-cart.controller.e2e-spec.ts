@@ -169,7 +169,6 @@ describe('Add product to cart (E2E)', () => {
     .set('Authorization', `Bearer ${token}`)
     .send()
 
-    console.log(fetchProductsResponse, 'fetchProductsResponse')
     expect(response.statusCode).toEqual(204);
     expect(fetchProductsResponse.body.products).not.toContainEqual(
                   expect.objectContaining({ id: product.id })

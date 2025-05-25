@@ -6,9 +6,10 @@ import { ProductRepository } from '@/domain/repositories/product-repository';
 import { PrismaProductRepository } from './repositories/prisma-product-repository';
 import { CartRepository } from '@/domain/repositories/cart-repository';
 import { PrismaCartRepository } from './repositories/prisma-cart-repository';
+import { CacheModule } from '../cache/cache.module';
 
 @Module({
-  imports: [],
+  imports: [CacheModule],
   controllers: [],
   providers: [
     PrismaService,

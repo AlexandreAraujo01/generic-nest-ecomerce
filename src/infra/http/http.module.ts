@@ -22,6 +22,8 @@ import { FetchCartUseCase } from '@/domain/use-cases/fetch-user-cart';
 import { FetchUserCartItemsController } from './controllers/fetch-user-cart-items.controller';
 import { RemoveProductFromCartUseCase } from '@/domain/use-cases/remove-product-from-cart-use-case';
 import { RemoveProductFromCartController } from './controllers/remove-product-from-cart.controller';
+import { GetProductByIdController } from './controllers/get-product-by-id.controller';
+import { GetProductByIdUseCase } from '@/domain/use-cases/get-product-by-id';
 @Module({
   imports: [DatabaseModule],
   controllers: [
@@ -35,6 +37,7 @@ import { RemoveProductFromCartController } from './controllers/remove-product-fr
     AddProductToCartController,
     FetchUserCartItemsController,
     RemoveProductFromCartController,
+    GetProductByIdController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -47,6 +50,7 @@ import { RemoveProductFromCartController } from './controllers/remove-product-fr
     AddProductToCartUseCase,
     RemoveProductFromCartUseCase,
     FetchCartUseCase,
+    GetProductByIdUseCase,
     {
       provide: HashEncoderDecoder,
       useClass: BcrypyEncoderDecoder,
