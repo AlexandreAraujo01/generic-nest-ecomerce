@@ -18,8 +18,16 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@/*": ["src/*"],
-      "@prisma/*": ["prisma/generated/*"]
+      "@/*": [
+        "apps/generic-e-comerce/src/*"
+      ],
+      "@prisma/*": [
+        "prisma/generated/*"
+      ],
+      "@test/*": [
+        "apps/generic-e-comerce/test/*"
+      ]
+      
     }
-  },
+  }
 }
