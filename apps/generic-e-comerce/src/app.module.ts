@@ -4,13 +4,14 @@ import { EnvModule } from './env/env.module';
 import { HttpModule } from './infra/http/http.module';
 import { envSchema } from './env/env';
 import { AppController } from './infra/app.controller';
-import { DatabaseModule } from './infra/database/database.module';
-import { AuthModule } from './infra/auth/auth.module';
+import { AuthModule } from '../../auth/src/auth.module';
 import { AppService } from './infra/app.service';
-import { AuthGuard } from './infra/auth/jwt-auth-guard';
 import { APP_GUARD } from '@nestjs/core';
-import { PrismaService } from './infra/database/services/prisma-service';
-import { RolesGuard } from './infra/auth/roles-guard';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
+import { DatabaseModule } from '@common/common/modules/database/database.module';
+import { AuthGuard } from '@auth/guards/auth.guard';
+import { RolesGuard } from '@common/common/guards/roles-guard';
+import { AuthClientModule } from './infra/event/event.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { RolesGuard } from './infra/auth/roles-guard';
     AuthModule,
     HttpModule,
     EnvModule,
+    AuthClientModule,
   ],
   controllers: [AppController],
   providers: [

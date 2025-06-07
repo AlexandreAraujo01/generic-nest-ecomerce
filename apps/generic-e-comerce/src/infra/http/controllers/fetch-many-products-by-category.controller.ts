@@ -7,10 +7,11 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { z } from 'zod';
-import { Public } from '@/infra/auth/public-route.decorator';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { ListProductsByCategoryUseCase } from '@/domain/use-cases/list-products-by-category';
-import { productPresenter } from '@/infra/database/presenters/product.presenter';
+import { productPresenter } from '@common/common/modules/database/presenters/product.presenter';
+import { Public } from '@common/common/decorators/public.decorator';
+
 
 const fetchProductsQuerySchema = z.object({
   category: z.string(),

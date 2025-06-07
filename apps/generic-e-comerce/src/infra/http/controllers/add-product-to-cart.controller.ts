@@ -1,10 +1,11 @@
-import { AuthetificationSchema } from "@/infra/auth/services/auth.service";
+
 import { User } from "@/infra/decorators/user.decorator";
 import { BadRequestException, Body, Controller, HttpCode, NotFoundException, Post } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
 import { AddProductToCartUseCase } from "@/domain/use-cases/add-product-to-cart";
 import { NotFoundError } from "@/domain/use-cases/errors/not-found-error";
+import { AuthetificationSchema } from "@auth/services/auth-service";
 
 const addProductToCartBodySchema = z.object({
     productId: z.string().uuid(),

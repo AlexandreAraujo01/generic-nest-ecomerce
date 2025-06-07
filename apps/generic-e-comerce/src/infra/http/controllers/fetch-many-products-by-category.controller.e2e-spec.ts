@@ -1,12 +1,13 @@
 import { AppModule } from '@/app.module';
-import { DatabaseModule } from '@/infra/database/database.module';
-import { PrismaProductMapper } from '@/infra/database/mappers/prisma-product-mapper';
-import { PrismaService } from '@/infra/database/services/prisma-service';
+
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 import { makeProductFactory } from '@test/factories/make-product-factory';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { DatabaseModule } from '@common/common/modules/database/database.module';
+import { PrismaProductMapper } from '@common/common/modules/database/mappers/prisma-product-mapper';
 
 describe('Fetch products by category (E2E)', () => {
   let app: INestApplication;

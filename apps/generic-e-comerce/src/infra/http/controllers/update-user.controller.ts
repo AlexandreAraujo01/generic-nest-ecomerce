@@ -9,10 +9,10 @@ import {
 } from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { User } from '@/infra/decorators/user.decorator'; // Aqui vem os dados do usuário
-import { AuthetificationSchema } from '@/infra/auth/services/auth.service'; // Tipagem de dados do usuário
+import { User } from '@/infra/decorators/user.decorator';
 import { NotAllowedError } from '@/domain/use-cases/errors/not-allowed-error';
 import { Address } from '@/domain/entities/address';
+import { AuthetificationSchema } from '@auth/services/auth-service';
 
 export const AddressSchema = z.object({
   street: z.string().min(1, 'Street is required'),
@@ -50,6 +50,7 @@ export class UpdateUserController {
     @Body(bodyValidationPipe) body: UpdateUserControllerBodySchema,
   ) {
     const { email, name, password, phone, userId, address } = body;
+    console.log(user, 'user???')
     const { sub } = user;
     const result = await this.updateUserUseCase.execute({
       email,

@@ -9,9 +9,9 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
-import { Roles } from '@/infra/auth/roles.decorator';
 import { z } from 'zod';
 import { NotFoundError } from 'rxjs';
+import { Roles } from '@common/common/decorators/roles.decorator';
 
 const updateProductBodySchema = z.object({
   productId: z.string(),

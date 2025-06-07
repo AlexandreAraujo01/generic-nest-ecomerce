@@ -1,6 +1,6 @@
 import { AppModule } from '@/app.module';
 import { Product } from '@/domain/entities/products';
-import { PrismaService } from '@/infra/database/services/prisma-service';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';

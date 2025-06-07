@@ -1,5 +1,4 @@
 import { RegisterUserUseCase } from '@/domain/use-cases/register-user-use-case';
-import { DatabaseModule } from '../database/database.module';
 import { Module } from '@nestjs/common';
 import { RegisterUserController } from './controllers/register-user.controller';
 import { HashEncoderDecoder } from '@/core/helpers/hashEncoder';
@@ -24,6 +23,7 @@ import { RemoveProductFromCartUseCase } from '@/domain/use-cases/remove-product-
 import { RemoveProductFromCartController } from './controllers/remove-product-from-cart.controller';
 import { GetProductByIdController } from './controllers/get-product-by-id.controller';
 import { GetProductByIdUseCase } from '@/domain/use-cases/get-product-by-id';
+import { DatabaseModule } from '@common/common/modules/database/database.module';
 @Module({
   imports: [DatabaseModule],
   controllers: [

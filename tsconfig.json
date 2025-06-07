@@ -21,13 +21,21 @@
       "@/*": [
         "apps/generic-e-comerce/src/*"
       ],
+      "@common/common": [
+        "libs/common/src"
+      ],
+      "@common/common/*": [
+        "libs/common/src/*"
+      ],
       "@prisma/*": [
         "prisma/generated/*"
       ],
       "@test/*": [
         "apps/generic-e-comerce/test/*"
+      ],
+      "@auth/*": [
+        "apps/auth/src/*"
       ]
-      
     }
   }
 }

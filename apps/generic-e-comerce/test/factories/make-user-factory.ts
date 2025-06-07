@@ -3,9 +3,9 @@ import { User, UserProps } from '@/domain/entities/user';
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
 import { hashSync } from 'bcryptjs';
-import { PrismaService } from '@/infra/database/services/prisma-service';
-import { PrismaUserMapper } from '@/infra/database/mappers/prisma-user-mapper';
 import { AddressesWatchedList } from '@/domain/entities/address-watched-list';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
+import { PrismaUserMapper } from '@common/common/modules/database/mappers/prisma-user-mapper';
 export function makeUserFactory(
   props: Partial<UserProps>,
   id?: UniqueEntityID,

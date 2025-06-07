@@ -10,8 +10,8 @@ import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { UserAlreadyExists } from '@/domain/use-cases/errors/user-already-exists-error';
 import { RegisterUserUseCase } from '@/domain/use-cases/register-user-use-case';
-import { Public } from '@/infra/auth/public-route.decorator';
 import { Role } from '@prisma/prisma';
+import { Public } from '@common/common/decorators/public.decorator';
 
 const registerBodySchema = z.object({
   name: z.string(),

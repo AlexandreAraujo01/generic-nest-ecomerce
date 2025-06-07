@@ -1,5 +1,5 @@
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/infra/database/services/prisma-service';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
@@ -47,6 +47,7 @@ describe('Update User (E2E)', () => {
       });
 
     const token = responseToken.body.access_token;
+    console.log(token, 'olha o token!')
 
     const response = await request(app.getHttpServer())
       .post('/accounts/update')
@@ -55,6 +56,8 @@ describe('Update User (E2E)', () => {
         userId: user?.id.toString(),
         email: 'john_doe@example.com',
       });
+      
+      console.log(response.body, 'response olha aqui')
 
     const updatedUser = await prisma.user.findUnique({
       where: { id: user?.id },

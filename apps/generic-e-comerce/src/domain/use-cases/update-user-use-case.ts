@@ -40,15 +40,19 @@ export class UpdateUserUseCase {
       new UniqueEntityID(userLoggedId),
     );
     const userWithSameEmail = await this.userRepository.findByEmail(email);
+    console.log(user, loggedUser, 'users???')
     if (!user || !loggedUser) {
+      console.log('erro 1')
       return left(new NotAllowedError());
     }
     const isUserAdmin = loggedUser.role === 'ADMIN' ? true : false;
     const isTheSameUser = userLoggedId === user.id.toString() ? true : false;
     if (!isUserAdmin && !isTheSameUser) {
+      console.log('erro 2')
       return left(new NotAllowedError());
     }
     if (userWithSameEmail && userWithSameEmail.id.toString() !== userId) {
+      console.log('erro 3')
       return left(new NotAllowedError());
     }
 

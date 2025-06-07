@@ -1,9 +1,10 @@
-import { PrismaProductMapper } from '@/infra/database/mappers/prisma-product-mapper';
-import { PrismaService } from '@/infra/database/services/prisma-service';
+
 import { faker } from '@faker-js/faker';
 import { Injectable } from '@nestjs/common';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { Product, ProductProps } from '@/domain/entities/products';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
+import { PrismaProductMapper } from '@common/common/modules/database/mappers/prisma-product-mapper';
 
 export function makeProductFactory(
   props: Partial<ProductProps>,

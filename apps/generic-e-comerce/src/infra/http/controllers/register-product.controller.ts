@@ -11,8 +11,8 @@ import {
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { ProductAlreadyExistsError } from '@/domain/use-cases/errors/product-already-exists-error';
-import { productPresenter } from '@/infra/database/presenters/product.presenter';
-import { Roles } from '@/infra/auth/roles.decorator';
+import { productPresenter } from '@common/common/modules/database/presenters/product.presenter';
+import { Roles } from '@common/common/decorators/roles.decorator';
 
 export const registerProductBodySchema = z.object({
   name: z.string(),

@@ -1,5 +1,5 @@
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/infra/database/services/prisma-service';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
@@ -60,6 +60,7 @@ describe('Update Product (E2E)', () => {
       });
 
     const token = responseToken.body.access_token;
+    console.log(token, 'update-product.controler.e2e-spec.ts token')
 
     const response = await request(app.getHttpServer())
       .post('/update/product')

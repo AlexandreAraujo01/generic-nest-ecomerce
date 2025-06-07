@@ -1,5 +1,5 @@
 import { AppModule } from '@/app.module';
-import { PrismaService } from '@/infra/database/services/prisma-service';
+import { PrismaService } from '@common/common/modules/database/services/prisma-service';
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
@@ -40,13 +40,14 @@ describe('Add product to cart (E2E)', () => {
       },
     });
 
+    console.log('ate aqui ok??')
     const responseToken = await request(app.getHttpServer())
       .post('/sessions')
       .send({
         email: 'john@example.com',
         password: '123456',
       });
-
+    console.log('passei??')
     const token = responseToken.body.access_token;
 
     const productResponse = await request(app.getHttpServer())
@@ -65,7 +66,7 @@ describe('Add product to cart (E2E)', () => {
     .set('Authorization', `Bearer ${token}`)
     .send()
 
-
+    console.log(productResponse.body,'tralalero tralala')
     const product = productResponse.body.product
 
     const response = await request(app.getHttpServer())

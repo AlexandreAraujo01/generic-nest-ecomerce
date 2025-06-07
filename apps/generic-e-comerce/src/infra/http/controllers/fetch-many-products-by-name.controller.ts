@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { z } from 'zod';
-import { Public } from '@/infra/auth/public-route.decorator';
 import { ListProductsByNameUseCase } from '@/domain/use-cases/list-products-by-name';
-import { productPresenter } from '@/infra/database/presenters/product.presenter';
+import { productPresenter } from '@common/common/modules/database/presenters/product.presenter';
+import { Public } from '@common/common/decorators/public.decorator';
 
 export const fetchManyProductsByNameParamSchema = z.object({
   name: z.string(),

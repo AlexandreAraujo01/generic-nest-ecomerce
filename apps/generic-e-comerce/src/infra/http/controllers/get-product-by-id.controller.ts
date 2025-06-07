@@ -2,9 +2,9 @@ import { GetProductByIdUseCase } from "@/domain/use-cases/get-product-by-id";
 import { BadRequestException, Body, Controller, HttpCode, NotFoundException, Post, ValidationPipe } from "@nestjs/common";
 import { z } from "zod";
 import { ZodValidationPipe } from "../pipes/zod-validation-pipe";
-import { Public } from "@/infra/auth/public-route.decorator";
 import { NotFoundError } from "@/domain/use-cases/errors/not-found-error";
-import { productPresenter } from "@/infra/database/presenters/product.presenter";
+import { productPresenter } from "@common/common/modules/database/presenters/product.presenter";
+import { Public } from "@common/common/decorators/public.decorator";
 
 
 const getProductByIdControllerRequest = z.object({
